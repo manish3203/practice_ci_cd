@@ -1,0 +1,25 @@
+version: 2.1
+
+executors:
+  flutter-executor:
+    docker:
+      - image: circleci/flutter:latest
+    working_directory: ~/project
+
+jobs:
+  build:
+    executor: flutter-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: flutter pub get
+      - run:
+          name: Run tests
+          command: flutter test
+      - run:
+          name: Build APK
+          command: flutter build apk --release
+      - store_artifacts:
+          path: build/app/outputs/flutter-apk/app-release.apk
+          destination: apk
